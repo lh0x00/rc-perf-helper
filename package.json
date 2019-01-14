@@ -1,7 +1,7 @@
 {
   "name": "rc-perf-helper",
   "version": "0.0.1",
-  "description": "",
+  "description": "tools to optimize performance when using React",
   "main": "dist/index.js",
   "scripts": {
     "build": "babel src --out-dir dist",
