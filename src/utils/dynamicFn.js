@@ -3,10 +3,12 @@
 
 import hashObject from 'utils/hashObject'
 
-const DEFAULT_KEY = '_fnCached'
+const defaultKey = '_fnCached'
 
-const dynamicFn = (fn: void, key?: string): void => {
-  const keyOfStore = key || DEFAULT_KEY
+const defaultGenerateId = (args: any) => hashObject(args).substr(1, 8)
+
+const dynamicFn = (fn: void, key?: string, generateId?: void): void => {
+  const keyOfStore = key || defaultKey
 
   fn[keyOfStore] = new Map()
 
@@ -14,8 +16,10 @@ const dynamicFn = (fn: void, key?: string): void => {
   const get = (id: string): any => fn[keyOfStore].get(id)
   const set = (id: string, data: void): any => fn[keyOfStore].set(id, data)
 
+  fn.generateId = generateId || defaultGenerateId
+
   return function handler(...args) {
-    const id = hashObject(args).substr(1, 8)
+    const id = fn.generateId(args)
     if (!has(id)) {
       set(id, fn.apply(this, args))
     }
